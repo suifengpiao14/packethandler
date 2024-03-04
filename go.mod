@@ -5,6 +5,7 @@ go 1.21.0
 require (
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.9.0
+	github.com/suifengpiao14/funcs v0.0.18
 	github.com/suifengpiao14/logchan/v2 v2.0.22
 	github.com/suifengpiao14/stream v0.0.53
 )
@@ -55,7 +56,6 @@ require (
 	github.com/suifengpiao14/apihandler v0.0.71 // indirect
 	github.com/suifengpiao14/cudevent v0.0.16 // indirect
 	github.com/suifengpiao14/ddl-executor v0.0.1 // indirect
-	github.com/suifengpiao14/funcs v0.0.18 // indirect
 	github.com/suifengpiao14/gjsonmodifier v0.1.10 // indirect
 	github.com/suifengpiao14/httpraw v0.0.6 // indirect
 	github.com/suifengpiao14/kvstruct v0.0.14 // indirect
