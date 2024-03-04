@@ -9,6 +9,39 @@ import (
 	"github.com/suifengpiao14/logchan/v2"
 )
 
+type Flow string
+
+type Flows []Flow
+
+func ToFlows(ss ...string) (flows Flows) {
+	flows = make(Flows, 0)
+	for _, s := range ss {
+		flows = append(flows, Flow(s))
+	}
+	flows.DropEmpty()
+	return flows
+}
+
+//DropEmpty 过滤空值
+func (fs *Flows) DropEmpty() {
+	flows := make(Flows, 0)
+	for _, f := range *fs {
+		s := strings.TrimSpace(string(f))
+		if s == "" {
+			continue
+		}
+		flows = append(flows, f)
+	}
+	*fs = flows
+}
+func (fs *Flows) Strings() (ss []string) {
+	ss = make([]string, 0)
+	for _, f := range *fs {
+		ss = append(ss, string(f))
+	}
+	return ss
+}
+
 var ERROR_EMPTY_FUNC = errors.New("empty func")
 
 // 定回调函数指针的类型
