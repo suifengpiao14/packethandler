@@ -13,7 +13,6 @@ var ERROR_EMPTY_FUNC = errors.New("empty func")
 
 // 定回调函数指针的类型
 type HandlerFn func(ctx context.Context, input []byte) (newCtx context.Context, out []byte, err error)
-type ErrorHandler func(ctx context.Context, err error) (out []byte)
 
 func EmptyHandlerFn(ctx context.Context, input []byte) (newCtx context.Context, out []byte, err error) {
 	return ctx, input, ERROR_EMPTY_FUNC
