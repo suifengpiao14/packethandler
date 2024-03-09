@@ -5,18 +5,16 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/suifengpiao14/packethandler"
-	"github.com/suifengpiao14/stream"
-	"github.com/suifengpiao14/stream/packet"
 )
 
 func TestInsertBefor(t *testing.T) {
 	marshalUnMarshal := packethandler.NewFuncPacketHandler("marshalUnMarshal", nil, nil)
 	unMarshalMarshal := packethandler.NewFuncPacketHandler("unMarshalMarshal", nil, nil)
-	commonPackets := stream.NewPacketHandlers(
+	commonPackets := packethandler.NewPacketHandlers(
 		marshalUnMarshal,
 		unMarshalMarshal,
 	)
-	transferPacket := packet.NewTransferPacketHandler("", "")
+	transferPacket := packethandler.NewFuncPacketHandler("empty", nil, nil)
 	t.Run("after not found", func(t *testing.T) {
 		packets := commonPackets
 		packets.InsertAfter(2, transferPacket)
@@ -70,7 +68,7 @@ func TestInsertBefor(t *testing.T) {
 	})
 	t.Run("replace first", func(t *testing.T) {
 		packets := commonPackets
-		newMarshalUnMarshal := packet.NewJsonMarshalUnMarshalPacket(nil, nil)
+		newMarshalUnMarshal := packethandler.NewFuncPacketHandler("hahah", nil, nil)
 		packets.Replace(0, newMarshalUnMarshal)
 		assert.Equal(t, 2, len(packets))
 	})
