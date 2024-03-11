@@ -11,6 +11,12 @@ import (
 
 type Flow []string
 
+func ToFlow(s string) (flow Flow) {
+	flow = Flow(strings.Split(s, ","))
+	flow.DropEmpty()
+	return flow
+}
+
 //DropEmpty 过滤空值
 func (fs *Flow) DropEmpty() {
 	flows := make(Flow, 0)
