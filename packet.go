@@ -74,6 +74,26 @@ func (ps *PacketHandlers) Append(packetHandlers ...PacketHandlerI) {
 	*ps = append(*ps, packetHandlers...)
 }
 
+func (ps *PacketHandlers) AddReplace(packetHandlers ...PacketHandlerI) {
+	if *ps == nil {
+		*ps = packetHandlers
+		return
+	}
+	for _, p := range packetHandlers {
+		exists := false
+		for i, p0 := range *ps {
+			if strings.EqualFold(p0.Name(), p.Name()) {
+				(*ps)[i] = p
+				exists = true
+				break
+			}
+		}
+		if !exists {
+			(*ps) = append((*ps), p)
+		}
+	}
+}
+
 // GetByName 通过名称获取子集合
 func (ps *PacketHandlers) GetNames() (names []string) {
 	names = make([]string, 0)
