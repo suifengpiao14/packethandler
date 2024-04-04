@@ -17,7 +17,7 @@ func ToFlow(s string) (flow Flow) {
 	return flow
 }
 
-//DropEmpty 过滤空值
+// DropEmpty 过滤空值
 func (fs *Flow) DropEmpty() {
 	flows := make(Flow, 0)
 	for _, f := range *fs {
@@ -33,6 +33,68 @@ func (fs *Flow) DropEmpty() {
 func (fs *Flow) String() (s string) {
 	s = strings.Join(*fs, ",")
 	return s
+}
+
+func (flow *Flow) Append(ss ...string) {
+	if *flow == nil {
+		*flow = make(Flow, 0)
+	}
+	*flow = append(*flow, ss...)
+}
+
+func (flow Flow) InsertBefore(index int, ss ...string) (newFlow Flow) {
+	newFlow = Flow{}
+	if index <= 0 || index > len(flow)-1 { // 找不到模板包位置，或者找到第一个，直接插入开头
+		newFlow.Append(ss...)
+		newFlow.Append(flow...)
+		return
+	}
+	before, after := (flow)[0:index], (flow)[index:]
+	newFlow.Append(before...)
+	newFlow.Append(ss...)
+	newFlow.Append(after...)
+	return newFlow
+
+}
+
+func (flow Flow) InsertAfter(index int, ss ...string) (newFlow Flow) {
+	newFlow = Flow{}
+	if index < 0 || index+1 >= len(flow) { // 找不到模板包位置,或者目标本就是最后一个，直接在结尾追加
+		newFlow.Append(ss...)
+		return
+	}
+	before, after := (flow)[0:index+1], (flow)[index+1:]
+
+	newFlow.Append(before...)
+	newFlow.Append(ss...)
+	newFlow.Append(after...)
+	return newFlow
+}
+
+func (flow *Flow) Delete(index int) {
+	if index < 0 || len(*flow)-1 < index { // 越界不操作
+		return
+	}
+	if index == len(*flow)-1 { // 需要删除的，在最后一个，直接截断
+		*flow = (*flow)[:index]
+		return
+	}
+	before, after := (*flow)[0:index], (*flow)[index+1:]
+	*flow = make(Flow, 0) // 此处必须重新申请，否则操作会覆盖原有地址
+	flow.Append(before...)
+	flow.Append(after...)
+}
+
+func (flow Flow) Replace(index int, ss ...string) (newFlow Flow) {
+	newFlow = make(Flow, 0)
+	if index < 0 || len(flow)-1 < index { // 找不到模板包位置,不删除
+		return
+	}
+	before, after := (flow)[0:index], (flow)[index+1:]
+	newFlow.Append(before...)
+	newFlow.Append(ss...)
+	newFlow.Append(after...)
+	return newFlow
 }
 
 var ERROR_EMPTY_FUNC = errors.New("empty func")
